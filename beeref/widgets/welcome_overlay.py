@@ -21,6 +21,7 @@ from PyQt6.QtCore import Qt
 
 from beeref.config import BeeSettings
 from beeref.main_controls import MainControlsMixin
+from beeref.i18n import _
 
 
 logger = logging.getLogger(__name__)
@@ -87,8 +88,8 @@ class RecentFilesView(QtWidgets.QListView):
 class WelcomeOverlay(MainControlsMixin, QtWidgets.QWidget):
     """Some basic info to be displayed when the scene is empty."""
 
-    txt = """<p>Paste or drop images here.</p>
-             <p>Right-click for more options.</p>"""
+    txt = """<p>{}</p>
+             <p>{}</p>""".format(_('Paste or drop images here.'), _('Right-click for more options.'))
 
     def __init__(self, parent):
         super().__init__(parent)
@@ -101,7 +102,7 @@ class WelcomeOverlay(MainControlsMixin, QtWidgets.QWidget):
         files_layout = QtWidgets.QVBoxLayout()
         files_layout.addStretch(50)
         files_layout.addWidget(
-            QtWidgets.QLabel('<h3>Recent Files</h3>', self))
+            QtWidgets.QLabel('<h3>{}</h3>'.format(_('Recent Files')), self))
         self.files_view = RecentFilesView(self, parent)
         files_layout.addWidget(self.files_view)
         files_layout.addStretch(50)

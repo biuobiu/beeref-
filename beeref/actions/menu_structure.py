@@ -13,16 +13,18 @@
 # You should have received a copy of the GNU General Public License
 # along with BeeRef.  If not, see <https://www.gnu.org/licenses/>.
 
+from beeref.i18n import _
+
 MENU_SEPARATOR = 0
 
 menu_structure = [
     {
-        'menu': '&File',
+        'menu': _('&File'),
         'items': [
             'new_scene',
             'open',
             {
-                'menu': 'Open &Recent',
+                'menu': _('Open &Recent'),
                 'items': '_build_recent_files',
             },
             MENU_SEPARATOR,
@@ -35,7 +37,7 @@ menu_structure = [
         ],
     },
     {
-        'menu': '&Edit',
+        'menu': _('&Edit'),
         'items': [
             'undo',
             'redo',
@@ -53,7 +55,7 @@ menu_structure = [
         ],
     },
     {
-        'menu': '&View',
+        'menu': _('&View'),
         'items': [
             'fit_scene',
             'fit_selection',
@@ -68,14 +70,14 @@ menu_structure = [
         ],
     },
     {
-        'menu': '&Insert',
+        'menu': _('&Insert'),
         'items': [
             'insert_images',
             'insert_text',
         ],
     },
     {
-        'menu': '&Transform',
+        'menu': _('&Transform'),
         'items': [
             'crop',
             'flip_horizontally',
@@ -89,7 +91,7 @@ menu_structure = [
         ],
     },
     {
-        'menu': '&Normalize',
+        'menu': _('&Normalize'),
         'items': [
             'normalize_height',
             'normalize_width',
@@ -97,7 +99,7 @@ menu_structure = [
         ],
     },
     {
-        'menu': '&Arrange',
+        'menu': _('&Arrange'),
         'items': [
             'arrange_optimal',
             'arrange_horizontal',
@@ -106,7 +108,7 @@ menu_structure = [
         ],
     },
     {
-        'menu': '&Images',
+        'menu': _('&Images'),
         'items': [
             'change_opacity',
             'grayscale',
@@ -116,7 +118,7 @@ menu_structure = [
         ],
     },
     {
-        'menu': '&Settings',
+        'menu': _('&Settings'),
         'items': [
             'settings',
             'keyboard_settings',
@@ -124,7 +126,7 @@ menu_structure = [
         ],
     },
     {
-        'menu': '&Help',
+        'menu': _('&Help'),
         'items': [
             'help',
             'about',

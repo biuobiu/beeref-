@@ -21,6 +21,7 @@ from PyQt6.QtCore import Qt
 
 from beeref import constants, commands
 from beeref.config import logfile_name
+from beeref.i18n import _
 from beeref.widgets import (  # noqa: F401
     controls,
     settings,
@@ -35,7 +36,7 @@ logger = logging.getLogger(__name__)
 class BeeProgressDialog(QtWidgets.QProgressDialog):
 
     def __init__(self, label, worker, maximum=0, parent=None):
-        super().__init__(label, 'Cancel', 0, maximum, parent=parent)
+        super().__init__(label, _('Cancel'), 0, maximum, parent=parent)
         logger.debug('Initialised progress bar')
         self.setMinimumDuration(0)
         self.setWindowModality(Qt.WindowModality.WindowModal)
@@ -66,7 +67,7 @@ class BeeProgressDialog(QtWidgets.QProgressDialog):
 class HelpDialog(QtWidgets.QDialog):
     def __init__(self, parent):
         super().__init__(parent)
-        self.setWindowTitle(f'{constants.APPNAME} Help')
+        self.setWindowTitle(f'{constants.APPNAME} {_("帮助")}')
 
         tabs = QtWidgets.QTabWidget()
 
@@ -79,7 +80,7 @@ class HelpDialog(QtWidgets.QDialog):
         scroll = QtWidgets.QScrollArea(self)
         scroll.setWidgetResizable(True)
         scroll.setWidget(controls_label)
-        tabs.addTab(scroll, '&Controls')
+        tabs.addTab(scroll, _('&Controls'))
 
         layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
@@ -97,7 +98,7 @@ class HelpDialog(QtWidgets.QDialog):
 class DebugLogDialog(QtWidgets.QDialog):
     def __init__(self, parent):
         super().__init__(parent)
-        self.setWindowTitle(f'{constants.APPNAME} Debug Log')
+        self.setWindowTitle(f'{constants.APPNAME} {_("调试日志")}')
         with open(logfile_name()) as f:
             self.log_txt = f.read()
 
@@ -107,7 +108,7 @@ class DebugLogDialog(QtWidgets.QDialog):
         buttons = QtWidgets.QDialogButtonBox(
             QtWidgets.QDialogButtonBox.StandardButton.Close)
         buttons.rejected.connect(self.reject)
-        self.copy_button = QtWidgets.QPushButton('Co&py To Clipboard')
+        self.copy_button = QtWidgets.QPushButton(_('Co&py To Clipboard'))
         self.copy_button.released.connect(self.copy_to_clipboard)
         buttons.addButton(
             self.copy_button, QtWidgets.QDialogButtonBox.ButtonRole.ActionRole)
@@ -141,12 +142,12 @@ class SceneToPixmapExporterDialog(QtWidgets.QDialog):
                 Qt.AspectRatioMode.KeepAspectRatio)
 
         self.ignore_change = False
-        self.setWindowTitle('Export Scene to Image')
+        self.setWindowTitle(_('Export Scene to Image'))
         self.setWindowModality(Qt.WindowModality.WindowModal)
         layout = QtWidgets.QGridLayout()
         self.setLayout(layout)
 
-        width_label = QtWidgets.QLabel('Width:')
+        width_label = QtWidgets.QLabel(_('Width:'))
         layout.addWidget(width_label, 0, 0)
         self.width_input = QtWidgets.QSpinBox()
         self.width_input.setRange(self.MIN_SIZE, self.MAX_SIZE)
@@ -154,7 +155,7 @@ class SceneToPixmapExporterDialog(QtWidgets.QDialog):
         self.width_input.valueChanged.connect(self.on_width_changed)
         layout.addWidget(self.width_input, 0, 1)
 
-        height_label = QtWidgets.QLabel('Height:')
+        height_label = QtWidgets.QLabel(_('Height:'))
         layout.addWidget(height_label, 1, 0)
         self.height_input = QtWidgets.QSpinBox()
         self.height_input.setMinimum(10)
@@ -203,12 +204,12 @@ class ChangeOpacityDialog(QtWidgets.QDialog):
 
         value = int(images[0].opacity() * 100) if images else 100
 
-        self.setWindowTitle('Change Opacity:')
+        self.setWindowTitle(_('Change Opacity:'))
         self.setWindowModality(Qt.WindowModality.WindowModal)
         layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
 
-        self.label = QtWidgets.QLabel('Opacity:')
+        self.label = QtWidgets.QLabel(_('Opacity:'))
         layout.addWidget(self.label)
 
         self.input = QtWidgets.QSlider(Qt.Orientation.Horizontal)
@@ -229,7 +230,7 @@ class ChangeOpacityDialog(QtWidgets.QDialog):
         self.show()
 
     def on_value_changed(self, value):
-        self.label.setText(f'Opacity: {value}%')
+        self.label.setText(f'{_("Opacity")}: {value}%')
         self.command.opacity = value / 100
         self.command.redo()
 

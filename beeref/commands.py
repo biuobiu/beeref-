@@ -14,12 +14,13 @@
 # along with BeeRef.  If not, see <https://www.gnu.org/licenses/>.
 
 from PyQt6 import QtCore, QtGui
+from beeref.i18n import _
 
 
 class InsertItems(QtGui.QUndoCommand):
 
     def __init__(self, scene, items, position=None, ignore_first_redo=False):
-        super().__init__('Insert items')
+        super().__init__(_('Insert items'))
         self.scene = scene
         self.items = items
         self.position = position
@@ -53,7 +54,7 @@ class InsertItems(QtGui.QUndoCommand):
 
 class DeleteItems(QtGui.QUndoCommand):
     def __init__(self, scene, items):
-        super().__init__('Delete items')
+        super().__init__(_('Delete items'))
         self.scene = scene
         self.items = items
 
@@ -71,7 +72,7 @@ class DeleteItems(QtGui.QUndoCommand):
 class MoveItemsBy(QtGui.QUndoCommand):
 
     def __init__(self, items, delta, ignore_first_redo=False):
-        super().__init__('Move items')
+        super().__init__(_('Move items'))
         self.items = items
         self.delta = delta
         self.ignore_first_redo = ignore_first_redo
@@ -92,7 +93,7 @@ class ScaleItemsBy(QtGui.QUndoCommand):
     """Scale items by a given factor around the given anchor."""
 
     def __init__(self, items, factor, anchor, ignore_first_redo=False):
-        super().__init__('Scale items')
+        super().__init__(_('Scale items'))
         self.ignore_first_redo = ignore_first_redo
         self.items = items
         self.factor = factor
@@ -116,7 +117,7 @@ class RotateItemsBy(QtGui.QUndoCommand):
     """Rotate items by a given delta around the given anchor."""
 
     def __init__(self, items, delta, anchor, ignore_first_redo=False):
-        super().__init__('Rotate items')
+        super().__init__(_('Rotate items'))
         self.ignore_first_redo = ignore_first_redo
         self.items = items
         self.delta = delta
@@ -140,7 +141,7 @@ class RotateItemsBy(QtGui.QUndoCommand):
 class NormalizeItems(QtGui.QUndoCommand):
 
     def __init__(self, items, scale_factors):
-        super().__init__('Normalize items')
+        super().__init__(_('Normalize items'))
         self.items = items
         self.scale_factors = scale_factors
 
@@ -158,7 +159,7 @@ class NormalizeItems(QtGui.QUndoCommand):
 class FlipItems(QtGui.QUndoCommand):
 
     def __init__(self, items, anchor, vertical):
-        super().__init__('Flip items')
+        super().__init__(_('Flip items'))
         self.items = items
         self.anchor = anchor
         self.vertical = vertical
@@ -174,7 +175,7 @@ class FlipItems(QtGui.QUndoCommand):
 class ResetScale(QtGui.QUndoCommand):
 
     def __init__(self, items):
-        super().__init__('Reset Scale')
+        super().__init__(_('Reset Scale'))
         self.items = items
 
     def redo(self):
@@ -191,7 +192,7 @@ class ResetScale(QtGui.QUndoCommand):
 class ResetRotation(QtGui.QUndoCommand):
 
     def __init__(self, items):
-        super().__init__('Reset Rotation')
+        super().__init__(_('Reset Rotation'))
         self.items = items
 
     def redo(self):
@@ -208,7 +209,7 @@ class ResetRotation(QtGui.QUndoCommand):
 class ResetFlip(QtGui.QUndoCommand):
 
     def __init__(self, items):
-        super().__init__('Reset Flip')
+        super().__init__(_('Reset Flip'))
         self.items = items
 
     def redo(self):
@@ -227,7 +228,7 @@ class ResetFlip(QtGui.QUndoCommand):
 class ResetCrop(QtGui.QUndoCommand):
 
     def __init__(self, items):
-        super().__init__('Reset Crop')
+        super().__init__(_('Reset Crop'))
         self.items = [item for item in items if item.is_image]
 
     def redo(self):
@@ -244,7 +245,7 @@ class ResetCrop(QtGui.QUndoCommand):
 class ResetTransforms(QtGui.QUndoCommand):
 
     def __init__(self, items):
-        super().__init__('Reset All Transformations')
+        super().__init__(_('Reset All Transformations'))
         self.items = items
 
     def redo(self):
@@ -278,7 +279,7 @@ class ResetTransforms(QtGui.QUndoCommand):
 class ArrangeItems(QtGui.QUndoCommand):
 
     def __init__(self, scene, items, positions):
-        super().__init__('Arrange items')
+        super().__init__(_('Arrange items'))
         self.scene = scene
         self.items = items
         self.positions = positions
@@ -299,7 +300,7 @@ class ArrangeItems(QtGui.QUndoCommand):
 
 class CropItem(QtGui.QUndoCommand):
     def __init__(self, item, crop):
-        super().__init__('Crop item')
+        super().__init__(_('Crop item'))
         self.item = item
         self.crop = crop
 
@@ -314,7 +315,7 @@ class CropItem(QtGui.QUndoCommand):
 class ChangeText(QtGui.QUndoCommand):
 
     def __init__(self, item, new_text, old_text):
-        super().__init__('Change text')
+        super().__init__(_('Change text'))
         self.item = item
         self.new_text = new_text
         self.old_text = old_text
@@ -330,7 +331,7 @@ class ChangeOpacity(QtGui.QUndoCommand):
     """Change opacity on images."""
 
     def __init__(self, items, opacity, ignore_first_redo=False):
-        super().__init__('Change Opacity')
+        super().__init__(_('Change Opacity'))
         self.ignore_first_redo = ignore_first_redo
         self.items = list(filter(lambda item: item.is_image, items))
         self.opacity = opacity
@@ -353,7 +354,7 @@ class ToggleGrayscale(QtGui.QUndoCommand):
     """Toggle grayscale mode on images."""
 
     def __init__(self, items, grayscale):
-        super().__init__('Toggle Grayscale')
+        super().__init__(_('Toggle Grayscale'))
         self.items = list(filter(lambda item: item.is_image, items))
         self.grayscale = grayscale
         self.old_grayscales = [item.grayscale for item in items]

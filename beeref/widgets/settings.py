@@ -21,6 +21,7 @@ from PyQt6.QtCore import Qt
 
 from beeref import constants
 from beeref.config import BeeSettings, settings_events
+from beeref.i18n import _
 
 
 logger = logging.getLogger(__name__)
@@ -134,62 +135,57 @@ class SingleCheckboxGroup(GroupBase):
 
 
 class ArrangeDefaultWidget(RadioGroup):
-    TITLE = 'Default Arrange Method:'
-    HELPTEXT = ('How images are arranged when inserted in batch')
+    TITLE = _('Default Arrange Method:')
+    HELPTEXT = _('How images are arranged when inserted in batch')
     KEY = 'Items/arrange_default'
     OPTIONS = (
-        ('optimal', 'Optimal', 'Arrange Optimal'),
-        ('horizontal', 'Horizontal (by filename)',
-         'Arrange Horizontal (by filename)'),
-        ('vertical', 'Vertical (by filename)',
-         'Arrange Vertical (by filename)'),
-        ('square', 'Square (by filename)', 'Arrannge Square (by filename)'))
+        ('optimal', _('Optimal'), _('Arrange Optimal')),
+        ('horizontal', _('Horizontal (by filename)'),
+         _('Arrange Horizontal (by filename)')),
+        ('vertical', _('Vertical (by filename)'),
+         _('Arrange Vertical (by filename)')),
+        ('square', _('Square (by filename)'), _('Arrannge Square (by filename)')))
 
 
 class ImageStorageFormatWidget(RadioGroup):
-    TITLE = 'Image Storage Format:'
-    HELPTEXT = ('How images are stored inside bee files.'
-                ' Changes will only take effect on newly saved images.')
+    TITLE = _('Image Storage Format:')
+    HELPTEXT = _('How images are stored inside bee files. Changes will only take effect on newly saved images.')
     KEY = 'Items/image_storage_format'
     OPTIONS = (
-        ('best', 'Best Guess',
-         ('Small images and images with alpha channel are stored as png,'
-          ' everything else as jpg')),
-        ('png', 'Always PNG', 'Lossless, but large bee file'),
-        ('jpg', 'Always JPG',
-         'Small bee file, but lossy and no transparency support'))
+        ('best', _('Best Guess'),
+         _('Small images and images with alpha channel are stored as png, everything else as jpg')),
+        ('png', _('Always PNG'), _('Lossless, but large bee file')),
+        ('jpg', _('Always JPG'),
+         _('Small bee file, but lossy and no transparency support')))
 
 
 class ArrangeGapWidget(IntegerGroup):
-    TITLE = 'Arrange Gap:'
-    HELPTEXT = ('The gap between images when using arrange actions.')
+    TITLE = _('Arrange Gap:')
+    HELPTEXT = _('The gap between images when using arrange actions.')
     KEY = 'Items/arrange_gap'
     MIN = 0
     MAX = 200
 
 
 class AllocationLimitWidget(IntegerGroup):
-    TITLE = 'Maximum Image Size:'
-    HELPTEXT = ('The maximum image size that can be loaded (in megabytes). '
-                'Set to 0 for no limitation.')
+    TITLE = _('Maximum Image Size:')
+    HELPTEXT = _('The maximum image size that can be loaded (in megabytes). Set to 0 for no limitation.')
     KEY = 'Items/image_allocation_limit'
     MIN = 0
     MAX = 10000
 
 
 class ConfirmCloseUnsavedWidget(SingleCheckboxGroup):
-    TITLE = 'Confirm when closing an unsaved file:'
-    HELPTEXT = (
-        'When about to close an unsaved file, should BeeRef ask for '
-        'confirmation?')
-    LABEL = 'Confirm when closing'
+    TITLE = _('Confirm when closing an unsaved file:')
+    HELPTEXT = _('When about to close an unsaved file, should BeeRef ask for confirmation?')
+    LABEL = _('Confirm when closing')
     KEY = 'Save/confirm_close_unsaved'
 
 
 class SettingsDialog(QtWidgets.QDialog):
     def __init__(self, parent):
         super().__init__(parent)
-        self.setWindowTitle(f'{constants.APPNAME} Settings')
+        self.setWindowTitle(f'{constants.APPNAME} {_("Settings")}')
         tabs = QtWidgets.QTabWidget()
 
         # Miscellaneous
@@ -197,7 +193,7 @@ class SettingsDialog(QtWidgets.QDialog):
         misc_layout = QtWidgets.QGridLayout()
         misc.setLayout(misc_layout)
         misc_layout.addWidget(ConfirmCloseUnsavedWidget(), 0, 0)
-        tabs.addTab(misc, '&Miscellaneous')
+        tabs.addTab(misc, _('&Miscellaneous'))
 
         # Images & Items
         items = QtWidgets.QWidget()
@@ -207,17 +203,19 @@ class SettingsDialog(QtWidgets.QDialog):
         items_layout.addWidget(AllocationLimitWidget(), 0, 1)
         items_layout.addWidget(ArrangeGapWidget(), 1, 0)
         items_layout.addWidget(ArrangeDefaultWidget(), 1, 1)
-        tabs.addTab(items, '&Images && Items')
+        tabs.addTab(items, _('&Images && Items'))
 
         layout = QtWidgets.QVBoxLayout()
         self.setLayout(layout)
         layout.addWidget(tabs)
 
         # Bottom row of buttons
-        buttons = QtWidgets.QDialogButtonBox(
-            QtWidgets.QDialogButtonBox.StandardButton.Close)
+        buttons = QtWidgets.QDialogButtonBox()
+        close_btn = QtWidgets.QPushButton(_('&Close'))
+        close_btn.setAutoDefault(False)
+        buttons.addButton(close_btn, QtWidgets.QDialogButtonBox.ButtonRole.RejectRole)
         buttons.rejected.connect(self.reject)
-        reset_btn = QtWidgets.QPushButton('&Restore Defaults')
+        reset_btn = QtWidgets.QPushButton(_('&Restore Defaults'))
         reset_btn.setAutoDefault(False)
         reset_btn.clicked.connect(self.on_restore_defaults)
         buttons.addButton(reset_btn,
@@ -229,8 +227,8 @@ class SettingsDialog(QtWidgets.QDialog):
     def on_restore_defaults(self, *args, **kwargs):
         reply = QtWidgets.QMessageBox.question(
             self,
-            'Restore defaults?',
-            'Do you want to restore all settings to their default values?')
+            _('Restore defaults?'),
+            _('Do you want to restore all settings to their default values?'))
 
         if reply == QtWidgets.QMessageBox.StandardButton.Yes:
             BeeSettings().restore_defaults()

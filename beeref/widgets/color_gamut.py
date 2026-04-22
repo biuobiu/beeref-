@@ -18,6 +18,7 @@ import math
 
 from PyQt6 import QtWidgets, QtGui, QtCore
 from PyQt6.QtCore import Qt
+from beeref.i18n import _
 
 
 logger = logging.getLogger(__name__)
@@ -99,19 +100,19 @@ class GamutWidget(QtWidgets.QWidget):
             y = max((self.size().height() - size) / 2, 0)
             painter.drawImage(QtCore.QRectF(x, y, size, size), self.image)
         else:
-            painter.drawText(10, 20, 'Counting pixels...')
+            painter.drawText(10, 20, _('Counting pixels...'))
 
 
 class GamutDialog(QtWidgets.QDialog):
     def __init__(self, parent, item):
         super().__init__(parent)
         self.item = item
-        self.setWindowTitle('Color Gamut')
+        self.setWindowTitle(_('Color Gamut'))
 
         # The input controls on the right
         controls_layout = QtWidgets.QVBoxLayout()
 
-        label = QtWidgets.QLabel('Threshold:', self)
+        label = QtWidgets.QLabel(_('Threshold:'), self)
         controls_layout.addWidget(label)
         self.threshold_input = QtWidgets.QSlider(self)
         self.threshold_input.setRange(0, 500)

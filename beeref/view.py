@@ -28,6 +28,7 @@ from beeref import constants
 from beeref import fileio
 from beeref.fileio.errors import IMG_LOADING_ERROR_MSG
 from beeref.fileio.export import exporter_registry, ImagesToDirectoryExporter
+from beeref.i18n import _
 from beeref import widgets
 from beeref.items import BeePixmapItem, BeeTextItem
 from beeref.main_controls import MainControlsMixin
@@ -210,7 +211,7 @@ class BeeGraphicsView(MainControlsMixin,
         if confirm and not self.undo_stack.isClean():
             answer = QtWidgets.QMessageBox.question(
                 self,
-                'Discard unsaved changes?',
+                _('Discard unsaved changes?'),
                 msg,
                 QtWidgets.QMessageBox.StandardButton.Yes |
                 QtWidgets.QMessageBox.StandardButton.Cancel)
@@ -220,8 +221,7 @@ class BeeGraphicsView(MainControlsMixin,
 
     def on_action_new_scene(self):
         confirm = self.get_confirmation_unsaved_changes(
-            'There are unsaved changes. '
-            'Are you sure you want to open a new scene?')
+            _('There are unsaved changes. Are you sure you want to open a new scene?'))
         if confirm:
             self.clear_scene()
 
@@ -408,9 +408,8 @@ class BeeGraphicsView(MainControlsMixin,
         if errors:
             QtWidgets.QMessageBox.warning(
                 self,
-                'Problem loading file',
-                ('<p>Problem loading file %s</p>'
-                 '<p>Not accessible or not a proper bee file</p>') % filename)
+                _('Problem loading file'),
+                _('<p>Problem loading file %s</p><p>Not accessible or not a proper bee file</p>') % filename)
         else:
             self.filename = filename
             self.scene.add_queued_items()
@@ -418,8 +417,7 @@ class BeeGraphicsView(MainControlsMixin,
 
     def on_action_open_recent_file(self, filename):
         confirm = self.get_confirmation_unsaved_changes(
-            'There are unsaved changes. '
-            'Are you sure you want to open a new scene?')
+            _('There are unsaved changes. Are you sure you want to open a new scene?'))
         if confirm:
             self.open_from_file(filename)
 
@@ -438,15 +436,14 @@ class BeeGraphicsView(MainControlsMixin,
 
     def on_action_open(self):
         confirm = self.get_confirmation_unsaved_changes(
-            'There are unsaved changes. '
-            'Are you sure you want to open a new scene?')
+            _('There are unsaved changes. Are you sure you want to open a new scene?'))
         if not confirm:
             return
 
         self.cancel_active_modes()
         filename, f = QtWidgets.QFileDialog.getOpenFileName(
             parent=self,
-            caption='Open file',
+            caption=_('Open file'),
             filter=f'{constants.APPNAME} File (*.bee)')
         if filename:
             filename = os.path.normpath(filename)
@@ -457,9 +454,8 @@ class BeeGraphicsView(MainControlsMixin,
         if errors:
             QtWidgets.QMessageBox.warning(
                 self,
-                'Problem saving file',
-                ('<p>Problem saving file %s</p>'
-                 '<p>File/directory not accessible</p>') % filename)
+                _('Problem saving file'),
+                _('<p>Problem saving file %s</p><p>File/directory not accessible</p>') % filename)
         else:
             self.filename = filename
             self.undo_stack.setClean()
@@ -481,7 +477,7 @@ class BeeGraphicsView(MainControlsMixin,
         directory = os.path.dirname(self.filename) if self.filename else None
         filename, f = QtWidgets.QFileDialog.getSaveFileName(
             parent=self,
-            caption='Save file',
+            caption=_('Save file'),
             directory=directory,
             filter=f'{constants.APPNAME} File (*.bee)')
         if filename:
@@ -498,7 +494,7 @@ class BeeGraphicsView(MainControlsMixin,
         directory = os.path.dirname(self.filename) if self.filename else None
         filename, formatstr = QtWidgets.QFileDialog.getSaveFileName(
             parent=self,
-            caption='Export Scene to Image',
+            caption=_('Export Scene to Image'),
             directory=directory,
             filter=';;'.join(('Image Files (*.png *.jpg *.jpeg *.svg)',
                               'PNG (*.png)',
@@ -532,14 +528,14 @@ class BeeGraphicsView(MainControlsMixin,
             err_msg = '</br>'.join(str(errors))
             QtWidgets.QMessageBox.warning(
                 self,
-                'Problem writing file',
-                f'<p>Problem writing file {filename}</p><p>{err_msg}</p>')
+                _('Problem writing file'),
+                _('<p>Problem writing file %s</p><p>%s</p>') % (filename, err_msg))
 
     def on_action_export_images(self):
         directory = os.path.dirname(self.filename) if self.filename else None
         directory = QtWidgets.QFileDialog.getExistingDirectory(
             parent=self,
-            caption='Export Images',
+            caption=_('Export Images'),
             directory=directory)
 
         if not directory:
@@ -570,7 +566,7 @@ class BeeGraphicsView(MainControlsMixin,
 
     def on_action_quit(self):
         confirm = self.get_confirmation_unsaved_changes(
-            'There are unsaved changes. Are you sure you want to quit?')
+            _('There are unsaved changes. Are you sure you want to quit?'))
         if confirm:
             logger.info('User quit. Exiting...')
             self.app.quit()
@@ -587,7 +583,7 @@ class BeeGraphicsView(MainControlsMixin,
     def on_action_about(self):
         QtWidgets.QMessageBox.about(
             self,
-            f'About {constants.APPNAME}',
+            _('About {APPNAME}').format(APPNAME=constants.APPNAME),
             (f'<h2>{constants.APPNAME} {constants.VERSION}</h2>'
              f'<p>{constants.APPNAME_FULL}</p>'
              f'<p>{constants.COPYRIGHT}</p>'
@@ -611,10 +607,10 @@ class BeeGraphicsView(MainControlsMixin,
                 f'<li>{fn}</li>' for fn in errors]
             errornames = '<ul>%s</ul>' % '\n'.join(errornames)
             num = len(errors)
-            msg = f'{num} image(s) could not be opened.<br/>'
+            msg = _('%s image(s) could not be opened.<br/>') % num
             QtWidgets.QMessageBox.warning(
                 self,
-                'Problem loading images',
+                _('Problem loading images'),
                 msg + IMG_LOADING_ERROR_MSG + errornames)
         self.scene.add_queued_items()
         self.scene.arrange_default()
@@ -648,7 +644,7 @@ class BeeGraphicsView(MainControlsMixin,
         logger.debug(f'Supported image types for reading: {formats}')
         filenames, f = QtWidgets.QFileDialog.getOpenFileNames(
             parent=self,
-            caption='Select one or more images to open',
+            caption=_('Select one or more images to open'),
             filter=f'Images ({formats})')
         self.do_insert_images(filenames)
 
@@ -708,7 +704,7 @@ class BeeGraphicsView(MainControlsMixin,
             self.undo_stack.push(commands.InsertItems(self.scene, [item], pos))
             return
 
-        msg = 'No image data or text in clipboard or image too big'
+        msg = _('No image data or text in clipboard or image too big')
         logger.info(msg)
         widgets.BeeNotification(self, msg)
 

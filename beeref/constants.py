@@ -13,8 +13,8 @@
 # You should have received a copy of the GNU General Public License
 # along with BeeRef.  If not, see <https://www.gnu.org/licenses/>.
 
-APPNAME = 'BeeRef'
-APPNAME_FULL = f'{APPNAME} Reference Image Viewer'
+APPNAME = 'BeeRef 中文版'
+APPNAME_FULL = f'{APPNAME} 参考图像查看器'
 VERSION = '0.3.4-dev'
 WEBSITE = 'https://github.com/rbreu/beeref'
 COPYRIGHT = 'Copyright © 2021-2024 Rebecca Breu'
