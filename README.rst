@@ -7,6 +7,11 @@ BeeRef 中文版 — 简单的参考图像查看器
 
 `BeeRef <https://beeref.org>`_ 让您可以快速排列参考图像并在创作时查看它们。其极简界面设计不会干扰您的创作过程。
 
+**本项目是 BeeRef 的中文汉化版本**，基于原项目进行了界面的中文翻译。
+
+**原项目地址**：`https://github.com/rbreu/beeref <https://github.com/rbreu/beeref>`_
+**原项目官网**：`https://beeref.org <https://beeref.org>`_
+
 |python-version| |github-ci-flake8| |github-ci-pytest| |codecov| |downloads-total| |downloads-latest|
 
 .. image:: https://github.com/rbreu/beeref/blob/main/images/screenshot.png
